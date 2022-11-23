@@ -1,0 +1,279 @@
+---
+title: "DAB501-Project-1- Group-3"
+output:
+  html_document:
+    df_print: paged
+---
+
+<html>
+<head>
+<title> </title>
+<body> <h4><b> <FONT COLOR="SKYBLUE">Vishant Bhatia(0798567), Tulaib Bin Ayyub(0789141), Alisha Mahajan(0802631)</FONT COLOR></b></h4>
+
+<p> <b>We affirm that we are the authors of this project and while completing it, we have followed St.Clair's college's policies on academic integrity.</b></p>
+
+<p>R version used- R version 4.2.1 (2022-06-23 ucrt)     </p>
+<p>RStudio used- 2022.07.1 version      </p>
+
+List of R packages used- tidyverse, here, plotly, ggplot2.
+
+<h5> <b> Library Imported and their versions</b></h5>
+
+<li>tidyverse : 1.3.2 </li>
+<li>here : 1.0.1 </li>
+<li>plotly : 4.10.0 </li>
+<li>ggplot2 : 3.3.6</li>
+
+<FONT SIZE=14><FONT COLOR="SKYBLUE"><b><h3> Contribution of each member:</h3></b></FONT COLOR></FONT SIZE>
+
+<P><h4><ul><b>Vishant Bhatia(0798567)</b></ul><li><FONT SIZE=3>Prepared two plots displaying information about a single categorical variable.</FONT SIZE></li><li><FONT SIZE=3>Prepared one plot displaying information about both a continuous variable and a categorical variable.</FONT SIZE></li><li><FONT SIZE=3>Answered Why Data Visualization is important to understand a datasets.</FONT SIZE></li><br>
+
+
+<P><h4><ul><b>Tulaib Bin Ayyub(0789141)</b></ul><li><FONT SIZE=3>Prepared two plots displaying information about a single continuous variable</li><li>Two plots should display information that shows a relationship between two variables.</FONT SIZE></li><li><FONT SIZE=3>Answered Why Data Visualization is important to communicating important aspects of datasets.</FONT SIZE></li><br>
+
+
+<P><h4><ul><b>Alisha Mahajan(0802631)</b></ul><li><FONT SIZE=3> One plot should use faceting and display information about 4 variables.</li><li>Prepared compitition plot.</FONT SIZE></li><li><FONT SIZE=3>Answered the role of integrity as an Analyst while creating a Data Visualization for communicating results to others.</FONT SIZE></li><li><FONT SIZE=3>Answered the number of variables that can be successfully represent in a visualization.</FONT SIZE></li><br>
+
+<h2><FONT COLOR="SKYBLUE"> Dataset: Indian Election 2019</FONT COLOR></h2>
+<h4><p><ul> Source: </ul> <a href=https://www.kaggle.com/code/paramarthasengupta/eda-plotly-prediction-indian-elections-2019> https://www.kaggle.com/code/paramarthasengupta/eda-plotly-prediction-indian-elections-2019</a><br>
+<br>
+<h5> <b> Datatypes and Variables </b></h5>
+<li> 
+STATE----chr type
+</li>
+<li>  
+CONSTITUENCY----chr type
+</li>
+<li>
+NAME----chr type
+</li>
+<li>
+WINNER----int type
+</li>
+<li>
+PARTY----chr type
+</li>
+<li>
+SYMBOL----chr type
+</li>
+<li>
+GENDER----chr type
+</li>
+<li>
+CRIMINAL.CASES----chr type
+</li>
+<li>
+AGE----int type
+</li>
+<li>
+CATEGORY----chr type
+</li>
+<li>
+EDUCATION----chr type
+</li>
+<li>
+ASETS----chr type
+</li>
+<li>
+LIABILITIES----chr type
+</li>
+<li>
+GENERAL.VOTES----int type
+</li>
+<li>
+POSTAL.VOTES----int type
+</li>
+<li>
+TOTAL.VOTES----int type
+</li>
+<li>
+OVER.TOTAL.ELECTORS.IN.CONSTITUENCY→ num type
+</li>
+<li>
+OVER.TOTAL.VOTES.POLLED..IN.CONSTITUENCY→ num type
+</li>
+<li>
+TOTAL.ELECTORS----int type
+</li>
+
+<p>   </p>
+<br>
+
+<h4>
+
+
+
+
+
+                                    
+
+```{r}
+
+library("tidyverse")
+library("here")
+library("plotly")
+library("ggplot2")
+
+
+```
+
+<h2><FONT COLOR="SKYBLUE">IMPORTING DATA</FONT></h2>
+```{r}
+indian_df <- read.csv("C:/F Drive/BAsic stats DAB 501/R programs/Indian_Election_2019.csv")
+```
+# 1 Question Plot-1
+```{r}
+ ggplot(data = indian_df,mapping = aes(POSTAL.VOTES))+
+  geom_histogram(binwidth = 250,color="black",fill="yellow")+
+  labs(title ="TOTAL NUMBER OF POSTAL VOTES",caption = "Data Source: Indian Election 2019",x = "Number of Postal Votes",y = "Number of Votes")+
+  theme(plot.title = element_text(color="blue", size=12, face="bold"), 
+        plot.caption = element_text(colour="red",size= 8,face = "bold",hjust = 1))
+  
+
+```
+<h2><FONT COLOR="SKYBLUE">Changes in Dataframe:</FONT></h2>
+<h5>Values were too high so divided GENERAL.VOTES,TOTAL.VOTES, TOTAL.ELECTORS by 10000(Ten Thousand) to get readable values while ploting </h5>
+
+```{r}
+indian_df <- indian_df %>% mutate(GENERAL.VOTES=GENERAL.VOTES/10000)
+
+```
+
+```{r}
+indian_df <- indian_df %>% mutate(TOTAL.VOTES = TOTAL.VOTES/10000)
+```
+```{r}
+  indian_df <- indian_df %>%  mutate(TOTAL.ELECTORS=TOTAL.ELECTORS/10000)
+```
+
+```{r}
+party_df <- indian_df %>% filter(PARTY %in% c("BJP","INC","AAP","SP","TDP","SAP", "MNM","CPI(ML)(L)","AIADMK","SAD(M)","DMDK","SAD","NOTA"))
+```
+```{r}
+ num_data <- transform(party_df,CRIMINAL.CASES = as.numeric(CRIMINAL.CASES))
+
+```
+# 1 Question Plot-2
+```{r}
+
+tvotes_density <- ggplot(data = indian_df,mapping = aes(TOTAL.VOTES))+
+  geom_histogram(aes(y = ..density..),binwidth=10,color="red",fill="blue")+
+  geom_density(color = "#000000", fill = "#F85700", alpha = 0.6) +
+  #ggtitle("DENSITY ACCORDING TO TOTAL VOTES ") +
+  labs(x = "Total Votes in Ten Thousand", y = "Density",caption = "Data Source:Indian Election 2019",title = "DENSITY ACCORDING TO TOTAL VOTES ")+
+  theme(plot.title = element_text(color="blue", size=12, face="bold"))
+  
+ggplotly(tvotes_density)
+```
+# 2 Question Plot-1
+```{r}
+#lab_gender <- c("Male", "Female", "Others")
+
+ggplot(indian_df,mapping = aes(x = GENDER))+
+  scale_x_discrete(breaks = c("MALE", "FEMALE", ""),
+                   labels = c("Male", "Female", "Others"))+
+  geom_bar(color="red",fill="yellow")+
+  geom_text(aes(label = ..count..), stat =   "count",
+            position = position_stack(vjust=0.5))+
+  labs(x = "Gender", y = "Count",caption = "Data Source:Indian Election 2019",title = "GENDER WISE COUNT PARTICIPATING IN INDIAN ELECTION 2019")+
+  theme(plot.title = element_text(color="blue", size=12, face="bold"), 
+        plot.caption = element_text(colour="red",size= 8,face = "bold",hjust = 1))
+```
+# 2 Question Plot-2
+```{r}
+ggplot(indian_df,mapping=aes(x = CATEGORY))+ 
+  scale_x_discrete(breaks = c("ST", "", "SC","GENERAL"),
+                   labels = c("ST", "Others", "SC","General"))+
+  geom_bar(color="black",fill = "cyan")+
+  coord_flip()+
+  geom_text(aes(label = ..count..), stat =   "count",
+            position = position_stack(vjust=0.5))+
+  labs(x = "Category", y = "Count",title = "No. of Candidates according to Category",caption = "Data Source:Indian Election 2019")+
+  theme(plot.title = element_text(color="blue", size=12, face="bold"), 
+        plot.caption = element_text(colour="red",size= 8,face = "bold",hjust = 1))
+```
+# 3 Question
+```{r}
+party_crime <- ggplot(num_data,aes(PARTY,CRIMINAL.CASES))+
+  geom_boxplot(aes(fill= PARTY), outlier.stroke = 2, color="black", outlier.shape=16,outlier.size=1, notch=FALSE) +
+  labs(title = "CRIMINAL CASES OF A PARTICULAR PARTY", x = "Party Name", y = "Criminal Cases",caption = "Data Source:Indian Election 2019")+
+  theme(plot.title = element_text(color="blue", size=12, face="bold"), 
+        plot.caption = element_text(colour="red",size= 8,face = "bold",hjust = 1))
+
+party_crime
+```
+
+
+# 4 Question Plot-1
+```{r}
+  symb_party <- ggplot(party_df, aes(y=PARTY,x= SYMBOL))+
+  geom_point(color="red")+
+  labs(title="SCATTER PLOT SHOWING DETAILS OF PARTY WITH THEIR SYMBOLS",
+       caption = "Data Source: Indian Election 2019", y = "Party Name" , x = "Different Party Symbols")+
+  theme(plot.title = element_text(color="blue", size=12, face="bold"))
+
+ggplotly(symb_party)
+
+```
+
+
+# 4 Question Plot-2
+```{r}
+electrol_state <- ggplot(indian_df, aes(y = STATE, x = TOTAL.ELECTORS))+
+  geom_bar(stat="identity", width = 0.9, fill="pink") +
+  labs(title="TOTAL ELECTORS IN A PARTICULAR STATE", y = "States", x = "Total Electors in Ten Thousand") +
+  theme(plot.title = element_text(color="blue", size=12, face="bold"))
+
+ggplotly(electrol_state)
+```
+
+
+# 5 Question 
+```{r}
+ggplot(party_df, aes(x=WINNER, y=PARTY, fill=GENDER))+
+  geom_bar(stat = "identity")+
+  facet_wrap(~CATEGORY,nrow = 2)+
+  labs(title="Displaying info of Winners and Party Name according to Gender",
+     caption = "Data Source: Indian Election 2019", x = "Winners", y = "Party Names")+
+  theme(plot.title = element_text(color="blue", size=12, face="bold"), 
+        plot.caption = element_text(colour="red",size= 8,face = "bold",hjust = 1))
+```
+
+# 6 Question
+```{r}
+
+point <- ggplot(party_df,mapping = aes(y=PARTY,x=STATE))+
+  geom_point(aes(color=WINNER))+
+  theme(axis.text.x = element_text(angle=75, vjust=0.6),axis.text.y =               element_text(angle=-75, vjust=0.4)) +
+  labs(title = "WINNING CANDIDATES FROM PARTICULAR PARTY AND STATE", x = "State Name", y = "Party Name")+
+  theme(plot.title = element_text(color="blue", size=12, face="bold"))
+  
+ggplotly(point)
+```
+
+<title></title>
+<body>
+<h4><b><FONT COLOR="SKY BLUE"> Questions </FONT COLOR></b></h4>
+
+<h7><b>Q1. In what ways do you think data visualization is important to understanding a data set?</b></h7>
+
+<h7><b>Ans.</b><h7> Data visualization is important because it helps in understanding and highlighting the trends and the outliers. It tells a story and remove unwanted things from the data and point out the useful informations.</h7>
+
+
+
+<h7><b>Q2. In what ways do you think data visualization is important to communicating important aspects of a data set?</b></h7>
+
+<h7><b>Ans.</b> Data visualization is very important to communicating important aspects of a data set as it visualize both numerical and categorical data which helps in proper understanding of data and also reduce the risk factor. It properly tells the context of data and gives proper relation between the varibles.</h7>
+
+
+<h7><b>Q3. What role does your integrity as an analyst play when creating a data visualization for communicating results to others?</b></h7>
+
+<h7><b>Ans.</b> It is very crucial for a data analyst to manage their data through security monitoring. It is the prior responsibility of the data integrity analyst to track proper records of company's data and to ensure that it is being handled with security and to safe from unauthorised access. Also its their responsibility to check authenticity and to prevent from copyrights.</h7>
+
+
+
+<h7><b>Q4. How many variables do you think you can successfully represent in a visualization? What happens when you exceed this number?</b></h7>
+
+<h7><b>Ans.</b>To get a successful visualization, it is pivot to plot enough no. of variables that extract efficient information. If we take limited variables let suppose 6-7, it gives us clear, understandable and efficient graph. On the country, if we take multivariables with large numbers of data, it will give us complex information which is not easy to understand and also it will lose its real purpose.</h7>
+
+
