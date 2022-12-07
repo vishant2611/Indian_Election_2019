@@ -1,0 +1,931 @@
+---
+title: "DAB501-Project-2- Group-3"
+output: html_notebook
+---
+
+<html>
+<head>
+<title> </title>
+<body> <h4><b> <FONT COLOR="SKYBLUE">Vishant Bhatia(0798567), Tulaib Bin Ayyub(0789141), Alisha Mahajan(0802631)</FONT COLOR></b></h4>
+
+<p> <b>We,Vishant Bhatia, Tulaib Bin Ayyub, and Alisha Mahajan hereby state that we have not communicated with or gained information in any way from any person or resource that would violate the College’s academic integrity policies, and that all work presented is our own. In addition, we also agree not to share our work in any way, before or after submission, that would violate the College’s academic integrity policies.</b></p>
+
+<p>R version used- R version 4.2.1 (2022-06-23 ucrt)     </p>
+<p>RStudio used- 2022.07.1 version      </p>
+
+List of R packages used- tidyverse, here, plotly, ggplot2.
+
+<h5> <b> Library Imported and their versions</b></h5>
+
+<li>tidyverse : 1.3.2 </li>
+<li>here : 1.0.1 </li>
+<li>plotly : 4.10.0 </li>
+<li>ggplot2 : 3.3.6</li>
+
+<FONT SIZE=14><FONT COLOR="SKYBLUE"><b><h3> Contribution of each member:</h3></b></FONT COLOR></FONT SIZE>
+
+<P><h4><ul><b>Vishant Bhatia(0798567)</b></ul><li><FONT SIZE=3>Prepared one Histogram plot displaying distribution about a single numerical variable i.e Age of Winning Candidates.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Box plot displaying information about outliers of above numerical variable.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Bar chart displaying count information about one categorical variable i.e Category of winning candidates.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Pie chart displaying proportions information about above categorical variable.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Scatter Plot displaying  information about pair of Numerical variable Age and General Votes.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Scatter Plot displaying information about pair of one Numerical variable Age and one categorical variable Category.</FONT SIZE></li><br>
+
+
+<P><h4><ul><b>Tulaib Bin Ayyub(0789141)</b></ul><li><li><FONT SIZE=3>Prepared one Histogram plot displaying distribution about a single numerical variable i.e Postal Votes.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Box plot displaying information about outliers of above numerical variable.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Bar chart displaying count information about one categorical variable i.e State.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Pie chart displaying proportions information about above categorical variable.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Scatter Plot displaying  information about pair of Numerical variable Age and Postal Votes.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Scatter Plot displaying information about pair of one Numerical variable Age and one categorical variable Winner</FONT SIZE></li><br>
+
+
+<P><h4><ul><b>Alisha Mahajan(0802631)</b></ul><li><FONT SIZE=3>Prepared one Histogram plot displaying distribution about a single numerical variable i.e General Votes.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Box plot displaying information about outliers of above numerical variable.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Bar chart displaying count information about one categorical variable i.e Education of candidates.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Pie chart displaying proportions information about above categorical variable.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Scatter Plot displaying  information about pair of Numerical variable Age and Total Votes.</FONT SIZE></li><li><FONT SIZE=3>Prepared one Scatter Plot displaying information about pair of one Numerical variable Age and one categorical variable State</FONT SIZE></li><br>
+
+<h2><FONT COLOR="SKYBLUE"> Dataset: Indian Election 2019</FONT COLOR></h2>
+<h4><p><ul> Source: </ul> <a href=https://www.kaggle.com/code/paramarthasengupta/eda-plotly-prediction-indian-elections-2019> https://www.kaggle.com/code/paramarthasengupta/eda-plotly-prediction-indian-elections-2019</a><br>
+<br>
+<h5> <b> Datatypes and Variables </b></h5>
+<li> 
+STATE----chr type
+</li>
+<li>  
+CONSTITUENCY----chr type
+</li>
+<li>
+NAME----chr type
+</li>
+<li>
+WINNER----int type
+</li>
+<li>
+PARTY----chr type
+</li>
+<li>
+SYMBOL----chr type
+</li>
+<li>
+GENDER----chr type
+</li>
+<li>
+CRIMINAL.CASES----chr type
+</li>
+<li>
+AGE----int type
+</li>
+<li>
+CATEGORY----chr type
+</li>
+<li>
+EDUCATION----chr type
+</li>
+<li>
+ASETS----chr type
+</li>
+<li>
+LIABILITIES----chr type
+</li>
+<li>
+GENERAL.VOTES----int type
+</li>
+<li>
+POSTAL.VOTES----int type
+</li>
+<li>
+TOTAL.VOTES----int type
+</li>
+<li>
+OVER.TOTAL.ELECTORS.IN.CONSTITUENCY→ num type
+</li>
+<li>
+OVER.TOTAL.VOTES.POLLED..IN.CONSTITUENCY→ num type
+</li>
+<li>
+TOTAL.ELECTORS----int type
+</li>
+
+<p>   </p>
+<br>
+
+<h4>
+
+
+```{r}
+library("tidyverse")
+library("here")
+library("plotly")
+library("ggplot2")
+library("plotrix")
+```
+
+
+```{r}
+setwd("C:\\F Drive\\BAsic stats DAB 501\\Project 2")
+```
+
+
+<P><h3><ul><b>Vishant Bhatia(0798567)</b></ul><br>
+<P><h5><ul><u>Univariate Analysis</u></ul><br>
+
+<P><h5><ul>Numeric Variable : <b>AGE</b></ul><br>
+
+
+
+```{r}
+indian_election_df <- read.csv("Indian_Election_2019.csv") 
+
+#indian_election_df
+
+```
+
+
+# 1. Create an appropriate plot to visualize the distribution of this variable.
+
+```{r}
+indian_election_df_winner <- indian_election_df %>% 
+                                filter(WINNER == 1)
+
+# here we are filtering out data only of winning candidates of Indian Election 2019
+```
+
+
+```{r}
+
+ggplotly(indian_election_df_winner %>% 
+  ggplot(aes(x = AGE)) +
+  geom_histogram(binwidth = 3,color = "yellow",fill = "red")+
+  labs(title="Distribution of Ages for Winning Candidate", 
+       y = "Count", x = "Age of Winning Candidate") )
+
+```
+
+In Above Histogram plot we can say that there are many winning candidates in Indian Election 2019 most of the ages are lies between 45-69.
+
+
+
+# 2. Consider any outliers present in the data. If present, specify the criteria used to identify them and provide a logical explanation for how you handled them.
+
+
+```{r}
+ggplotly(indian_election_df_winner %>% 
+  ggplot(aes(y = AGE)) +
+  geom_boxplot(color = "Red", fill = "cyan")+
+  labs(title="Distribution of Ages for Winning Candidate", 
+       x = "Count", y = "Age of Winning Candidate"))
+
+
+
+```
+
+In Above box plot we can clearly see that Median of winning candidates of Indian Election 2019 is 55, and most of the data lies between 47-63 age. 
+
+There are many ways to find Outliers in above boxplot but the accurate way is:
+
+1. First we have to find the distance between First Quartile (Q1) and Third Quartile (Q3), which is called Interquartile (IQR)
+
+2. Anything which is beyond Q3 + 1.5 times the IQR and anything which is less than Q1 - 1.5 times the IQR gives the possible outliers.These are those observations which are away from box.
+
+3.Most Probable outliers are those values that are more than or less than above statement.
+
+For Example in our above BoxPlot:-
+Q1 = 47
+Q3 = 63
+IQR = Q3-Q1 = 16
+
+possible outliers are 
+values > = Q3 + 1.5 * IQR called capping and values < = Q1 - 1.5 * IQR calling flooring
+
+Values > = 87 (capping)
+values < = 23 (flooring)
+
+According to this formula and after studying above histogram plot we can say that we have one outlier that is 87 and it's count is 1.
+
+There are many ways to handle outliers.
+
+First is we can remove that record.But it is not recommended. 
+
+Second way is if there are so many outliers values we can assign the value nearer to that outlier. for example if values are greater than 99 percentile then we can assign the 99th percentile value, and if value is less than 1 percentile then we can assign the 1st percentile value to that outlier.
+
+Third way is assign that value which is nearer to the median and outlier.
+
+
+# 3. Describe the shape and skewness of the distribution
+
+Ans--> In our 1st question we make histogram plot. The shape of Histogram is somehow symmetry and bell shaped. 
+
+
+# 4. Based on your answer to the previous question, decide if it is appropriate to apply a transformation to your data. If no, explain why not. If yes, name the transformation applied and visualize the transformed distribution.
+
+
+```{r}
+summary(indian_election_df_winner$AGE)
+summary(log10(indian_election_df_winner$AGE))
+summary(sqrt(indian_election_df_winner$AGE))
+
+```
+
+
+```{r}
+indian_election_df_winner$log_age <- log10(indian_election_df_winner$AGE)
+
+ggplotly(indian_election_df_winner %>% 
+  ggplot(aes(x = log_age)) +
+  geom_histogram(color = "yellow",fill = "red",bins = 20)+
+  labs(title="Distribution of Log10(Ages) for Winning Candidate", 
+       y = "Count", x = "Log10(Age of Winning Candidate)") )
+
+```
+
+
+```{r}
+
+indian_election_df_winner$sqrt_age <- sqrt(indian_election_df_winner$AGE)
+
+ggplotly(indian_election_df_winner %>% 
+  ggplot(aes(x = sqrt_age)) +
+  geom_histogram(color = "yellow",fill = "red",bins = 20)+
+  labs(title="Distribution of SQRT(Ages) for Winning Candidate",
+       y = "Count", x = "SQRT(Age of Winning Candidate)") )
+
+```
+
+
+By comparing above three histograms one from 1st question and other two are from Log10 and SQRT, we can say that there is no need of transformation of our original data as the distribution is symmetry and bell shaped in our original histogram. 
+
+
+
+
+# 5. Choose and calculate an appropriate measure of central tendency.
+Ans--> The word "central tendancy" is fairly common in statistics. It's a technique to explain how your data are distributed. While central tendancy does not provide you with the fine details of your data, it does provide you with a general notion of how your data are distributed.
+
+The mean, median, and mode are the three most widely used parameters of central tendency. The median of an ordered dataset is the value in the centre, whereas the mean or average is equal to the sum of all the values in the data set divided by the number of values in the data set. On the other side, mode shows you the dataset's most repeatable value.
+So in our case we are using mean as central tendency. 
+
+```{r}
+mean(indian_election_df_winner$AGE)
+
+```
+
+# 6. Explain why you chose this as your measure of central tendency. Provide supporting evidence for your choice.
+
+Because age is an issue and we need to know the average age of the candidates who would win the 2019 Indian Election, we have chosen "Mean" as the central tendency. The victorious candidates' average age is now 54.44.
+Since the mean and median values in this situation are about equal, we can also compute the median here. We are using visualisation to demonstrate this proof (Box plot and Histogram).
+
+
+```{r}
+
+ggplotly(indian_election_df_winner %>% 
+  ggplot(aes(y = AGE)) +
+  geom_boxplot(color = "Red", fill = "cyan")+
+  labs(title="Distribution of Ages for Winning Candidate", 
+       x = "Count", y = "Age of Winning Candidate"))
+
+```
+
+
+In above boxplot it is clearly shown that median of age is 55.
+
+```{r}
+
+ggplotly(indian_election_df_winner %>% 
+  ggplot(aes(x = AGE)) +
+  geom_histogram(binwidth = 3,color = "yellow",fill = "red")+
+  labs(title="Distribution of Ages for Winning Candidate", 
+       y = "Count", x = "Age of Winning Candidate") )
+
+```
+
+In above Histogram we can say that mean is just near about 54.50. 
+
+
+# 7.  Choose and calculate a measure of spread that is appropriate for your chosen measure of central tendency. Explain why you chose this as your measure of spread.
+
+We have following factors for measure of spread or measure of dispersion
+1. Range
+2. Inter-Quartile Range 
+3. Variance
+4. Mean Deviation 
+5. Standard Deviation
+
+```{r}
+sd(indian_election_df_winner$AGE)
+
+```
+
+<html><p>In above question we use Standard Deviation because When data is distributed relatively normally, the standard deviation performs exceptionally well and provides information similar to that of the IQR. But the IQR is typically favored for data that is obviously non-normal.But in our case Age is just normally distributed.</p><br> 
+
+
+
+
+
+<P><h5><ul>Categorical Variable : <b>CATEGORY</b></ul><br>
+
+For each categorical variable :
+
+# 1. Create an appropriate plot to visualize the distribution of counts for this variable. 
+
+
+```{r}
+
+ggplotly(indian_election_df_winner %>% 
+  ggplot(aes(x = CATEGORY)) +
+  geom_bar(color = "black",fill = "cyan")+
+  labs(title="Count of Different Categories of Winning Candidate", 
+       y = "Count", x = "Category") )
+
+
+```
+
+
+# 2. Create an appropriate plot to visualize the distribution of proportions for this variable.
+
+```{r}
+pie_data <- table(indian_election_df_winner$CATEGORY)
+
+
+
+lbls <- paste(names(pie_data), "\n", pie_data, sep="")
+
+pie3D(pie_data, labels = lbls, 
+      main = "Proportions of Different Categories of Winning Candidate")
+
+
+
+```
+
+
+
+
+# 3. Discuss any unusual observations for this variable?
+
+Ans--> There is only one unusual observation in above categorical variable. Out of 539, 55 are from ST category or we can say that aprox only 10 % of candidates are from ST category which is like an outlier of our data.
+
+# 4. Discuss if there are too few/too many unique values?
+
+Ans-> There are only 3 unique values in our categorical variable  i.e General Category, SC Category and ST Category.<br>
+
+```{r}
+unique(indian_election_df_winner$CATEGORY)
+
+```
+
+
+
+
+<br><P><h5><ul><u>Bivariate Analysis</u></ul><br>
+
+<P><h5><ul>One pair of Numeric Variable : <b>AGE</b> and <b>General Votes</b></ul><br>
+
+<P><h5><ul>One pair of Numeric  and Categorical Variable : <b>AGE</b> and <b>Category</b></ul><br>
+
+
+
+# 1. Create an appropriate plot to visualize the relationship between the two variables.
+
+
+1. For 1st Pair
+
+```{r}
+indian_election_df_winner <- indian_election_df_winner %>% mutate(GENERAL.VOTES=GENERAL.VOTES/10000)
+
+```
+
+
+```{r}
+
+
+ggplotly(indian_election_df_winner_sort %>% 
+        ggplot(aes(x = AGE, y = GENERAL.VOTES)) +
+        geom_point() +
+        geom_smooth(formula = y ~ x, method = "lm") +
+        labs(title="Comaprison of Age and General Votes",
+        y = "No. of General Votes", x = " Age"))
+
+```
+
+2. For 2nd Pair
+
+```{r}
+
+ggplotly(indian_election_df_winner %>% 
+  ggplot(aes(x = CATEGORY, y = AGE, fill = CATEGORY)) +
+  geom_point()+
+    
+  labs(title="Comaprison of Category and Age of Winning Candidates ", 
+       y = "Age", x = "Category"))
+
+
+```
+
+
+# 2. Describe the form, direction, and strength of the observed relationship. Include both qualitative and quantitative measures, as appropriate.
+
+Ans--> When examining a scatterplot and Boxplot , we have to be able to explain the relationship between the variables that we observe.
+
+The form, direction, and Strength of the connection, as well as the existence of any outliers, should always be included in a brief description of the association in a scatterplot.
+
+Form: Is the relationship of either linear or nonlinear. Here in our 1st case it is slighly showing negative linear relation as Age is increasing no. of votes are  decreasing. 
+
+
+Strength: Does it seem as though there is a strong, fairly strong, or weak association. In our case there is weak relationship. 
+
+```{r}
+cor(indian_election_df_winner$AGE,indian_election_df_winner$GENERAL.VOTES)
+
+
+```
+
+
+
+Direction: It tells whether the relationship is positive or negative. In our case relationship is negative and weak.
+
+
+
+
+# 3. Explain what this relationship means in the context of the data?
+
+Ans--> The significance of the correlation coefficient for the variables indicates the direction of the relationship between the two. Positive relationships are denoted with a "plus" symbol, whereas bad relationships are denoted by a "minus" sign.
+
+Positive --> When two variables are positively correlated, they both tend to move in the same direction: If one grows, the other usually follows suit. One tends to diminish when the other does as well.
+
+Negative --> When two variables are negatively correlated, they often move in the opposite directions: if one grows, the other tends to drop, and vice versa.
+
+
+
+The form is refered to the whether relationship is linear or non linear.
+
+Linear-->A straight connection is referred to as being linear since it resembles a straight line.
+
+Curvilinear--> Because a curved connection resembles a curved line, it is referred to as being curvilinear.
+
+
+
+We exclusively work with correlation coefficients that measure linear relationships in this Value. Other correlation coefficients exist that quantify curved relationships, but they are advanced in nature.
+
+Perfect Relationship-->The coefficient of correlation is either +1.00 or -1.00 when two variables are linearly connected. Either favourably or negatively, it is claimed that they are precisely linearly connected.
+
+No Relationship-->Relationship: When there is absolutely no connection between two variables, their correlation coefficient is 0.00.
+
+
+
+For all these things we use coefficient of correlation. Predictions may be made with the use of correlations. We may expect that two variables will continue to correlate in the ahead if they have been shown to do so in the past. To forecast the value that the other variable will have in the future, we may utilise the value of one variable.
+
+
+
+
+# 4. Describe the variability that you observe in the plot and how that corresponds to the strength you calculated in no. 2 above.
+
+
+<html><p>Variance--> The statistical assessment of the variation in numbers within a data collection is known as variance. In more detail, variance assesses how far apart each number in the collection is from the mean (average) and, consequently, from each other.
+The square root of the variance is the Standard Deviation. 
+
+We can learn more about our data than what is often shown by conventional statistical summaries by using a scatterplot to visualise it. Bivariate data can be summarised using one of two fundamental methods: regression analysis or correlation analysis. Regression analysis describes how to leverage the relationship between the two components to forecast or control one variable using the other. The standard error of estimate and coefficient of determination, both equal to the square of the correlation r, are two indicators of how well a regression analysis performed. The former indicates the typical size of prediction errors, while the latter indicates the proportion of the Y variable's variability that is "explained" by the X variable.
+
+Now, in our first scatter plot, we can observe that the majority of the data is present for both the variable x and y axis in the middle of the graph.
+
+According to strength of our data our scatter plot is weak in relationship. I must say it is negative in relationship.<br>
+
+
+
+
+
+<br><P><h3><ul><b>Tulaib Bin Ayyub (0789141)</b></ul><br>
+<P><h5><ul><u>Univariate Analysis</u></ul><br>
+
+<P><h5><ul>Numeric Variable : <b>Postal Votes</b></ul><br>
+
+
+
+```{r}
+df_ind_elec <- read.csv("Indian_Election_2019.csv")
+df_ind_elec
+```
+#Univariate 
+#Numeric variable:
+
+# Ques1. Create an appropriate plot to visualize the distribution of this variable.
+
+```{r}
+
+ggplotly(df_ind_elec %>% 
+  ggplot(aes(POSTAL.VOTES))+
+  geom_histogram(binwidth = 70, color = "darkblue")+
+    labs(title = "DISTRIBUTION OF POSTAL VOTES", x = "Number Of Postal Votes", y = "Count"))
+
+```
+
+
+# Ques2. Consider any outliers present in the data. If present, specify the criteria used to identify them and provide a logical explanation for how you handled them.
+
+```{r}
+ggplotly(df_ind_elec %>% 
+           ggplot(aes(y = POSTAL.VOTES))+
+           geom_boxplot(fill = "skyblue"))
+```
+
+Ans2. After looking at the generated boxplot, we can clearly see that there are multiple outliers. To handle the outliers we can impute them with median if they are close to median or we can impute them with any value closer to the outliers which is not an outlier.
+
+
+# Ques3. Describe the shape and skewness of the distribution.
+
+```{r}
+mean(df_ind_elec$POSTAL.VOTES)
+```
+Ans3. After finding the mean above and median in question 2, we can say that the shape and skewness of the distribution are unimodel and right skewed because most of the data are in left part.
+
+
+# Ques4. Based on your answer to the previous question, decide if it is appropriate to apply a transformation to your data. If no, explain why not. If yes, name the transformation applied and visualize the transformed distribution.
+
+
+
+
+```{r}
+df_ind_elec <- df_ind_elec %>%
+  mutate(sqrt_pst.vote = sqrt(POSTAL.VOTES))
+
+ggplotly(df_ind_elec %>% 
+  ggplot(aes(sqrt_pst.vote))+
+  geom_histogram(binwidth = 10, fill = "skyblue", color = "black")+
+    labs(title = "DISTRIBUTION USING SQUARE ROOT TRANSFORMATION", x = "sqrt(POSTAL VOTES)", y = "Count"))
+```
+
+Ans4. After using Log10 Transformation it is difficult to interpret the visualization because the data has too many zero values which gives us negative infinity.
+And after using square root transformation it is easy to interpret the distribution which is in a shape of unimodel and the distribution is right skewed.
+
+
+# Ques5. Choose and calculate an appropriate measure of central tendency.
+```{r}
+mean(df_ind_elec$POSTAL.VOTES)
+```
+
+# Ques6. Explain why you chose this as your measure of central tendency. Provide supporting evidence for your choice.
+
+```{r}
+ggplotly(df_ind_elec %>% ggplot(aes(y = POSTAL.VOTES))+
+  geom_boxplot(fill = "skyblue"))
+```
+
+ Ans6. Chose this because it is showing the average of postal votes which is very different in comparison to the median. In this boxplot we can see the median is low i.e., 316.00 and the mean was 990.7106 as we saw in previous answer. 
+
+
+# Ques7. Choose and calculate a measure of spread that is appropriate for your chosen measure of central tendency. Explain why you chose this as your measure of spread.
+```{r}
+sd(df_ind_elec$POSTAL.VOTES)
+```
+
+Ans. To calculate measures of spread we can use minimum value, maximum value, standard deviation, variance, interquartile(IQR), etc. We are taking standard deviation and the value is high so the value in the data set are spread over a wide range.
+
+
+<P><h5><ul>Categorical Variable : <b>State</b></ul><br>
+
+
+# Categorical variable:
+
+# Ques1. Create an appropriate plot to visualize the distribution of counts for this variable.
+
+```{r}
+ggplotly(df_ind_elec %>% ggplot(aes(STATE))+
+  geom_bar(fill = "skyblue", color = "black")+
+    coord_flip()+
+    labs(title = "DISTRIBUTION OF STATES", x = "States", y = "Count"))
+```
+
+
+# Ques2. Create an appropriate plot to visualize the distribution of proportions for this variable.
+
+```{r}
+df_ind_elec %>% 
+  ggplot(aes(x = factor(1), fill = factor(STATE)))+
+  geom_bar(width = 1)+
+  coord_polar(theta = 'y', start = 0)+
+  labs(title = "PROPORTIONS OF DIFFERENT STATES", x = "States")
+
+
+```
+
+
+
+# Ques3. Discuss any unusual observations for this variable?
+
+Ans3. Having too many value in this variable which is making it hard to interpret the visualization.
+
+
+# Ques4. Discuss if there are too few/too many unique values?
+
+```{r}
+unique(df_ind_elec$STATE)
+```
+Ans4. Yes there are too many unique values i.e., 36. 
+
+
+
+<br><P><h5><ul><u>Bivariate Analysis</u></ul><br>
+
+<P><h5><ul>One pair of Numeric Variable : <b>AGE</b> and <b>Postal Votes</b></ul><br>
+
+<P><h5><ul>One pair of Numeric  and Categorical Variable : <b>AGE</b> and <b>Winner</b></ul><br>
+
+
+
+# Ques1. Create an appropriate plot to visualize the relationship between the two variables.
+
+Ans1. 
+1. Plot using two numerical variables.
+```{r}
+df_ind_elec <- df_ind_elec %>% 
+                mutate(POSTAL.VOTES = POSTAL.VOTES/100)
+```
+
+
+```{r}
+ggplotly(df_ind_elec %>% 
+           ggplot(aes(x = AGE, y = POSTAL.VOTES))+
+           geom_point(color = "skyblue")+
+           geom_smooth(method = "gam", 
+                       formula = y ~ s(x, bs = "cs")))
+```
+
+ 2. Plot using one numerical and one categorical variable.
+```{r}
+ggplotly(df_ind_elec %>%
+  ggplot(aes(x = WINNER, y = AGE))+
+  geom_point(color = "skyblue"))
+```
+
+# Ques2. Describe the form, direction, and strength of the observed relationship. Include both qualitative and quantitative measures, as appropriate.
+
+```{r}
+cor( df_ind_elec$AGE, df_ind_elec$POSTAL.VOTES, 
+     use = "complete.obs")
+```
+
+Ans2. Form tells if the relationship is linear or non-linear and in our case the form is showing linear correlation.
+Direction tells if the correlation is positive or negative and in our case it is showing positive correlation.
+Strength tells weather the correlation is weak strong or fairly strong  and in our case the relation between variables is fairly strong i.e., 0.12936.
+
+
+# Ques3. Explain what this relationship means in the context of the data.
+
+Ans3. This relationship means to understand and find the correlation between two variables. So that we can find the positive, negative, curvilinear relationship. We can say the relationship is perfect if the value lies between -1 to +1 and a no relationship when no relation is found so the correlation is 0. 
+To find the relationship we use correlation coefficient.
+
+
+# Ques4. Describe the variability that you observe in the plot and how that corresponds to the strength
+you calculated in #2 above.
+
+Ans4. By utilizing a scatter plot to visualize our data, we may discover more about it than what is frequently shown by traditional statistical summaries. One of the two primary techniques—correlation analysis or regression analysis—can be used to summarize bivariate data. Regression analysis explains how to take advantage of the connection between the two elements to predict or regulate one parameter using the other. Two measures of how well a regression analysis worked are the standard error of estimate and coefficient of determination, both equal to the square of the correlation r. Indicated by the latter is the percentage of the Y variable's variability that can be "explained" by the X variable, the former indicating the average size of prediction mistakes.
+Scatter plot shows a rather good and fairly strong relationship with the quality of our data and it is a possibly positive relationship
+
+
+
+
+
+
+
+
+
+<br><P><h3><ul><b>Alisha Mahajan(0802631)</b></ul><br>
+<P><h5><ul><u>Univariate Analysis</u></ul><br>
+
+<P><h5><ul>Numeric Variable : <b>GENERAL VOTES</b></ul><br>
+
+
+
+```{r} 
+ind_elec <- read.csv("Indian_election_2019.csv")
+
+```
+
+# 1. Create an appropriate plot to visualize the distribution of this variable.
+
+```{r}
+
+ind_elec <- ind_elec %>%
+  mutate(GENERAL.VOTES = GENERAL.VOTES/1000)
+```
+
+
+```{r}
+
+
+ggplot(ind_elec, aes(x = GENERAL.VOTES))+
+  geom_histogram( color = "BLUE", fill = "YELLOW") +
+  labs(title="Distribution of general votes in 2019 election", 
+       y = "Count", x = "No. of general votes") 
+```
+
+In the above histogram, it can be seen that there is right skewed distribution where general votes lies mostly on left side.
+
+# 2.Consider any outliers present in the data. If present, specify the criteria used to identify them and provide a logical explanation for how you handled them.
+
+```{r}
+ggplotly(ind_elec %>% 
+  ggplot(aes(y = GENERAL.VOTES)) +
+  geom_boxplot(color = "Red", fill = "blue")+
+  labs(title="Distribution of General votes in 2019 election", 
+       x = "Count", y = "General Votes"))
+```
+In above box plot, it can be seen that there are many outliers in this plot which can be calculated as:
+
+ Interquartile (IQR) = Q3-Q1
+                     = 485.81 - 21.03
+                     = 464.78
+
+possible outliers:   values > = Q3 + 1.5 * IQR (capping) and values < = Q1 - 1.5 * IQR (flooring)
+ 
+ values > = 1182.98 and values < = -676.14 
+ 
+ So, according to this formula, there is no outliers in this plot. but in my analysis there are some outliers which falls between 485.81 and 1066.82.
+ 
+ How to handel outliers: 
+ 
+ 1. first way to handle these outliers is to simply delete it or remove it. But this is not an appropriate way.
+ 2. second way is to assign that value which is nearer value.
+ 3. And Third way is to find the mean, if it is nearby the values then we take that value. 
+ 
+ 
+# 3. Describe the shape and skewness of the distribution?
+Ans: The shape of the distribution is unimodel as it has one hump and it can be clearly seen that there is right skewed distribution where general votes lies mostly on left side.
+ 
+ 
+# 4. Based on your answer to the previous question, decide if it is appropriate to apply a transformation to your data. If no, explain why not. If yes, name the transformation applied and visualize the transformed distribution.
+ 
+```{r}
+ summary(ind_elec$GENERAL.VOTES)
+```
+
+```{r}
+summary(log10(ind_elec$GENERAL.VOTES))
+```
+```{r}
+summary(sqrt(ind_elec$GENERAL.VOTES))
+```
+
+```{r}
+ind_elec$log_gvote <- log10(ind_elec$GENERAL.VOTES)
+```
+
+
+```{r}
+
+
+ggplotly(ind_elec %>% 
+  ggplot(aes(x = log_gvote)) +
+  geom_histogram(color = "yellow",fill = "red",bins = 20)+
+  labs(title="Distribution of Log10(GENERAL VOTES) for Candidate", 
+       y = "Count", x = "Log10(General Votes of Candidate)") )
+```
+ 
+```{r}
+ind_elec$sqrt_gvotes = sqrt(ind_elec$GENERAL.VOTES)
+```
+ 
+ 
+```{r}
+
+ggplotly(ind_elec %>% 
+  ggplot(aes(x = sqrt_gvotes)) +
+  geom_histogram(color = "yellow",fill = "red",bins = 20)+
+  labs(title="Distribution of SQRT(GENERAL VOTES) for Candidate", 
+       y = "Count", x = "SQRT(General Votes of Candidate)") )
+
+```
+After comparing above 3 plots, 1 in question 2nd and 2 in question 4th i.e. log10 and sqrt, it can be decided that we can take Ist plot which is symmetrical rather that other two plots that are not symmetrical(forming 2 humps.)
+ 
+# 5 . Choose and calculate an appropriate measure of central tendency. 
+Ans: Central tendency: The statistical measure that designates one value as being representative of a whole distribution is known as central tendency. [2] The complete set of data will be accurately described. It is the single value that best characterizes or encapsulates the information gathered.
+
+Mean, median and mode are three ways that are used to measure central tendency.
+
+```{r}
+median_value <- median(ind_elec$GENERAL.VOTES)
+median_value
+
+```
+
+```{r}
+mean_value <- mean(ind_elec$GENERAL.VOTES)
+mean_value
+```
+# 6. Explain why you chose this as your measure of central tendency. Provide supporting evidence for your choice .
+Ans: After analyzing central tendency for mean and median of variable general votes, I take mean as the measure for central tendency because it it more accurate than median and also our data is mostly on left side and also we are calculated average of general  votes. so, mean is best suited for this variable.
+
+
+# 7. Choose and calculate a measure of spread that is appropriate for your chosen measure of central tendency. Explain why you chose this as your measure of spread.
+Ans:
+We can calculate measure of spread in many ways like Range, IQR, Variance, Mean deviation, Standard deviation. but here I am calculating variance for general votes:
+```{r}
+var(ind_elec$GENERAL.VOTES)
+
+```
+The average squared deviation from the mean, also known as variance, gives us the average dispersion from the mean for a given set of data. However, if an outlier is present, the value returned after squaring the deviation from the mean would be excessively large, which immediately leads us to the conclusion that an outlier is present in the data set. When you calculate the variance, you'll see that the result is abnormally high in the big picture. We basically take the square root of these numbers to restore them to their normal value and give us a number that is much more typical in order to account for this.
+
+
+<br><P><h5><ul>Categorical Variable : <b>EDUCATION</b></ul><br>
+
+# 1.Create an appropriate plot to visualize the distribution of counts for this variable.
+
+```{r}
+ggplotly(ind_elec %>% 
+  ggplot(aes(x = EDUCATION)) +
+  geom_bar(color = "bLUE",fill = "PINK")+
+  labs(title="Count of Education Candidate", 
+       y = "Count", x = "Education") )
+```
+# 2. Create an appropriate plot to visualize the distribution of proportions for this variable.
+
+```{r}
+
+ind_elec %>% 
+  ggplot(aes(x = factor(1), fill = factor(EDUCATION)))+
+  geom_bar( width = 1)+
+  coord_polar(theta = 'y', start = 0)+
+  labs(title="Proportions of Education of Candidate", 
+       y = "Count", x = "Education") 
+  
+
+
+```
+
+
+# 3. Discuss any unusual observations for this variable.
+Ans: There are some unusual observations of Eductaion categorical variable like 
+
+1. In some observations there are duplicate values.
+2. In some of the cases there are missing values.
+3. In this variable some values are "Not Available"
+
+
+# 4. Discuss if there are too few/too many unique values?
+Ans:There are total 13 unique values, we have in this categorical variable.
+
+```{r}
+unique(ind_elec$EDUCATION)
+```
+
+
+<br><P><h5><ul><u>Bivariate Analysis</u></ul><br>
+
+<P><h5><ul>One pair of Numeric Variable : <b>AGE</b> and <b>Total Votes</b></ul><br>
+
+<P><h5><ul>One pair of Numeric  and Categorical Variable : <b>AGE</b> and <b>STATE</b></ul><br>
+
+# 1. Create an appropriate plot to visualize the relationship between the two variables.
+
+```{r}
+
+ind_elc <- ind_elec %>% 
+            mutate(TOTAL.VOTES=TOTAL.VOTES/1000)
+
+
+```
+
+```{r}
+ggplotly(ind_elc%>% 
+        ggplot(aes(x = AGE, y = TOTAL.VOTES, color = CATEGORY)) +
+        geom_point() +
+        geom_smooth(formula = y ~ x, method = "lm") +
+        labs(title="Comparison of Age and Total Votes",
+        y = "No. of Total Votes", x = " Age"))
+
+```
+
+
+2. For 2nd pair 
+
+```{r}
+
+ggplotly(ind_elc %>% 
+  ggplot(aes(x = AGE, y = STATE, fill = STATE)) +
+  geom_point()+
+    
+  labs(title="Comparison of State and Age of Candidates ", 
+       y = "State", x = "Age"))
+
+
+```
+# 2. Describe the form, direction, and strength of the observed relationship. Include both qualitative
+and quantitative measures, as appropriate. 
+
+Ans--> In a scatterplot, a quick summary of the link should always include the form, direction, and strength of the connection as well as the presence of any outliers.
+
+Form: Is the relationship of either linear or nonlinear. Here in our 1st case it is slighly showing positive linear relation as Age is increasing no. of Total votes are  Increasing.
+
+Strength : It tells us how strong is relation between the variables, either weak, strong or fairly strong. But in this case Our relation is fairly strong and positive. Here below we are calculating correlation coefficient within two variables.
+
+
+```{r}
+
+cor(ind_elc$AGE, ind_elc$TOTAL.VOTES, use = "complete.obs")
+
+```
+Direction: It tells whether the relationship is positive or negative. In our case relationship is Positive and fairly strong.
+
+# 3 Explain what this relationship means in the context of the data.
+
+Ans--> Understanding and determining the correlation between two variables is what this connection refers to. in order to identify the curvilinear, positive, and negative relationships. If the value is between -1 and +1, then the relationship is perfect; otherwise, there is no association, and the correlation is 0.
+We utilize the correlation coefficient to discover the relationship.
+In our case correlation coefficient is positive i.e + 0.208
+
+# 4 Describe the variability that you observe in the plot and how that corresponds to the strength
+you calculated in #2 above.
+
+Ans--> The Variance is the numerical measure of how thew data is spread across the mean. The R language's var() function calculates a vector's sample variance. It serves as a gauge for how much a value deviates from the mean. The square root of the variance is the standard deviation. 
+
+Two measures of how well a regression analysis worked are the standard error of estimate and coefficient of determination, both equal to the square of the correlation r. Indicated by the latter is the percentage of the Y variable's variability that can be "explained" by the X variable, the former indicating the average size of prediction mistakes.
+
+Now in our first Scatter plot most of the data is present in the bottom of the graph, which means mostly values of total votes are less.
+
+
+According to strength of our data our scatter plot is fairly strong in relationship. I must say it is positive relation.
+
